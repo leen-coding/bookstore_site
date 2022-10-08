@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>imgs</title>
+</head>
+<body>
+{#方式1#}
+<img src="/static/imgs/images.jpeg" width="500px">
+{#方式2#}
+{% load static %}
+<img src = {% static 'imgs/images.jpeg' %} width="500px">
+
+</body>
+</html>

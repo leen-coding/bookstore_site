@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+{#继承的用法#}
+    {% block basepage %}
+    <title>Base</title>
+    {% endblock %}
+</head>
+
+<body>
+<h1>this is top</h1>
+{#反向解析url#}
+<a href="{% url 'base_url' %}">base</a>
+<a href="{% url 'sport_url' %}">sports</a>
+
+{% block content %}
+this is base content
+{% endblock %}
+
+<h1>this is down</h1>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHAT_SOCKET_WEB</title>
+    <style>
+        .message{
+            height: 300px;
+            border: 3px solid;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>#}
+    <div class="message" id="message"></div>
+    <div>
+        <input type="text" placeholder="plz input" id="txt">
+        <input type="button" value="send" onclick="sendMsg()">
+        <input type="button" value="disconnect" onclick="closeConn()">
+    </div>
+
+    <script>
+        socket = new WebSocket("ws://192.168.0.34:5000/websocket/home/")
+        //服务端执行self.accept之后自动触发
+        socket.onopen = function (event){
+            let tag = document.createElement("div");
+            tag.innerText = "[CONNECTED]";
+            document.getElementById("message").appendChild(tag);
+        }
+        {#自动触发的当有服务端发送数据给前端#}
+        socket.onmessage = function (event){
+            let tag = document.createElement("div");
+            tag.innerText = event.data;
+            document.getElementById("message").appendChild(tag);
+        }
+
+        {#客户端发消息#}
+        function sendMsg(){
+            let tag = document.getElementById("txt");
+            socket.send(tag.value);
+        }
+
+        function closeConn(){
+            socket.close();
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>CALCULATOR</h1>
+<form action="/cal_plus_minus" method="post">
+    <input type="text" name="x" value="{{ x }}">
+    <select name="op">
+        <option value="add" {% if op == "add" %} selected{% endif %}>+</option>
+        <option value="sub" {% if op == "sub" %} selected{% endif %}>-</option>
+    </select>
+    <input type="text" name="y" value="{{ y }}"> = {{ result }}<br>
+    <input type="submit" value="Start">
+</form>
+
+
+</body>
+</html>

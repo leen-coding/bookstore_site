@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHATWEB</title>
+    <style>
+        .message{
+            height: 300px;
+            border: 3px solid;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div class="message" id="message"></div>
+    <div>
+        <input type="text" placeholder="plz input" id="txt">
+        <input type="button" value="send" onclick="sendMsg();">
+    </div>
+    <script>
+        {#function sendMsg(){#}
+        {#    var text = $("#txt").val()#}
+        {##}
+        {#    //基于Ajex向后台发送请求#}
+        {#    $.ajax(#}
+        {#        {#}
+        {#            url: '/chatweb/send/msg/',#}
+        {#            type: 'GET',#}
+        {#            data:{#}
+        {#                text:text#}
+        {#            },#}
+        {#            success:function (res) {#}
+        {#                console.log("send success", res)#}
+        {#            }#}
+        {#        }#}
+        {#    )#}
+        {
+            {#//轮训#}
+            {#var max_index = 0;#}
+            {#setInterval(function () {#}
+            {#    $.ajax({#}
+            {#        url: "/chatweb/getinfo/",#}
+            {#        data: {#}
+            {#            index: max_index#}
+            {#        },#}
+            {#        type: "GET",#}
+            {##}
+            {#        success: function (res) {#}
+            {#            #}
+            {#            if (res.length !==0) {#}
+            {##}
+            {#                for (var i = 0; i < res.length; ++i) {#}
+            {#                    var cur_data = res[i];#}
+            {#                    console.log(cur_data.prime)#}
+            {#                    var tag = $("<div>");#}
+            {#                    tag.text("temperature:" + cur_data.temperature + "\t humidity: " + cur_data.humidity);#}
+            {#                    $("#message").append(tag);#}
+            {#                }#}
+            {#                max_index = res.pop().prime;#}
+            {#            }#}
+            {#        }#}
+            {#    })#}
+            {##}
+            {#    #}
+            {#1000#}
+            var max_index = 0;
+            function long_poll() {
+                $.ajax({
+                    url: "/chatweb/getinfo/",
+                    data: {
+                        index: max_index
+                    },
+                    type: "GET",
+
+                    success: function (res) {
+
+                        if (res.length !== 0) {
+
+                            for (var i = 0; i < res.length; ++i) {
+                                var cur_data = res[i];
+                                console.log(cur_data.prime)
+                                var tag = $("<div>");
+                                tag.text("temperature:" + cur_data.temperature + "\t humidity: " + cur_data.humidity);
+                                $("#message").append(tag);
+                            }
+                            max_index = res.pop().prime;
+
+                        }
+                        long_poll();
+                    }
+                })}
+
+                $(function () {
+                    long_poll();
+                })
+            }
+
+
+            </script>
+</body>
+</html>
